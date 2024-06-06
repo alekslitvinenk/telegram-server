@@ -14,3 +14,7 @@ export function isUserData(value: unknown): value is UserData {
     const userData: UserData = value as UserData;
     return userData.token !== undefined
 }
+
+export function getNewToken(): string {
+    return "123"
+}

@@ -6,5 +6,4 @@ export const pool:Pool = mariadb.createPool({
     password: 'Ichufef@5',
     database: 'telegram',
     connectionLimit: 5,
-    rowsAsArray: true
 });
