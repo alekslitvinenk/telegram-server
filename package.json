@@ -1,0 +1,25 @@
+{
+  "name": "telegram-server",
+  "version": "1.0.0",
+  "description": "telegram bot",
+  "main": "dist/app.js",
+  "scripts": {
+    "start": "tsc && node dist/app.js",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander Litvinenko",
+  "license": "MIT",
+  "devDependencies": {
+    "@eslint/js": "^9.4.0",
+    "@types/express": "^4.17.1",
+    "eslint": "^9.4.0",
+    "globals": "^15.4.0",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.12.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mariadb": "^3.3.1"
+  }
+}
