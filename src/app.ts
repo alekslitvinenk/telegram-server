@@ -43,6 +43,18 @@ app.post('/do_login', (req, res) => {
     }
 });
 
+app.post('/do_logout', (req, res) => {
+    res.status(200).send('User logged out');
+});
+
+app.get('/current_login', (req, res) => {
+    res.status(200).send('User logged out');
+});
+
+app.get('/user_profile', (req, res) => {
+    res.status(200).send('User logged out');
+});
+
 app.post('/do_register', (req, res) => {
     if (isLoginData(req.body)) {
         const loginData: LoginData = req.body as LoginData;
