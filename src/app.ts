@@ -1,38 +1,16 @@
 import express from 'express';
-import crypto from 'crypto'
+import "./types";
+import {LoginData, UserDataOpt} from "./types";
+import {isLoginData, isUserData} from "./utils";
+import {Users} from "./users";
+
 const app = express();
 const port = 3000;
-
-interface LoginData {
-    telegramID: string;
-    password: string;
-}
-
-interface UserData extends LoginData {
-    createdAt: Date;
-    token: string; // automatically generated token
-}
-
-type UserDataOpt = UserData | null
-
-//TODO: hash passwords
-function getHash(str: string): string {
-    return crypto.createHash('sha256').update(str).digest('hex');
-}
-
-function isLoginData(value: unknown): value is LoginData {
-    const loginData: LoginData = value as LoginData;
-    return loginData.telegramID !== undefined && loginData.password !== undefined;
-}
-
-function isUserData(value: unknown): value is UserData {
-    const userData: UserData = value as UserData;
-    return userData.token !== undefined
-}
+const users = new Users()
 
 //TODO: lookup user in DB
-function doLogin(data: LoginData): UserDataOpt {
-    return null
+function doLogin(data: LoginData): Promise<UserDataOpt> {
+    return users.lookupUser(data.telegramID, data.password)
 }
 
 app.use(express.json());
