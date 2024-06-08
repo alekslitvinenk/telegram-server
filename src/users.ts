@@ -23,7 +23,7 @@ export class Users {
                 return null
             }
         } catch (err) {
-            throw err;
+            console.log(err);
         } finally {
             if (conn) await conn.end();
         }
@@ -39,7 +39,7 @@ export class Users {
 
             return this.lookupUser(telegramId)
         } catch (err) {
-            throw err;
+            console.log(err);
         } finally {
             if (conn) await conn.end();
         }
