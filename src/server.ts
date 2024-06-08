@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Express} from "express";
 import {Users} from "./users";
 import {LoginData, UserData} from "./types";
 import {isLoginData} from "./utils";
@@ -67,7 +67,7 @@ export const useExpressJs = (port: number, users: Users) => {
         }
     });
 
-    app.listen(port, () => {
+    return app.listen(port, () => {
         return console.log(`Express is listening at http://localhost:${port}`);
     });
 }
