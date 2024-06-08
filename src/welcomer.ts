@@ -42,7 +42,7 @@ export class Welcomer {
                     [
                         {
                             text: "Join our community!",
-                            url: `https://welcomer.libra-move.com?name=${firstName}&id=${telegramID}`
+                            url: `https://wlecomer.libra-move.com?name=${firstName}&id=${telegramID}`
                         }
                     ]
                 ]
