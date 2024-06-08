@@ -2,8 +2,17 @@ import "./types";
 import {Users} from "./users";
 import {useExpressJs} from "./server";
 import {useTelegram} from "./telegram";
+import mariadb from "mariadb";
 
-const users: Users = new Users()
+const mariadbPool = mariadb.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_SCHEMA,
+    connectionLimit: 5,
+});
+
+const users: Users = new Users(mariadbPool)
 
 const app = useExpressJs(3000, users)
 const bot = useTelegram(process.env.BOT_TOKEN)

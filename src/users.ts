@@ -1,14 +1,18 @@
 import {UserDataOpt} from "./types";
-import {PoolConnection} from "mariadb";
-import {pool} from "./pool";
+import {Pool, PoolConnection} from "mariadb";
 import {getNewToken} from "./utils";
 
 export class Users {
+    private readonly pool: Pool;
+
+    constructor(pool: Pool) {
+        this.pool = pool
+    }
 
     async lookupUser(telegramId: string): Promise<UserDataOpt> {
         let conn: PoolConnection;
         try {
-            conn = await pool.getConnection();
+            conn = await this.pool.getConnection();
             const rows = await conn.query(`SELECT * FROM users WHERE telegram_id = '${telegramId}'`);
             console.log(rows);
 
@@ -33,7 +37,7 @@ export class Users {
         let conn: PoolConnection;
 
         try {
-            conn = await pool.getConnection();
+            conn = await this.pool.getConnection();
             const rows = await conn.query("INSERT INTO users (telegram_id, password, token) VALUES (?, ?, ?)", [telegramId, password, getNewToken()]);
             console.log(rows);
 
