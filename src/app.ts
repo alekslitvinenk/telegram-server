@@ -1,8 +1,9 @@
 import "./types";
 import {Users} from "./users";
 import {useExpressJs} from "./server";
-import {useTelegram} from "./telegram";
 import mariadb from "mariadb";
+import {useWelcomer} from "./welcomer";
+import {Chats} from "./chats";
 
 const mariadbPool = mariadb.createPool({
     host: process.env.DB_HOST,
@@ -14,13 +15,14 @@ const mariadbPool = mariadb.createPool({
 
 const users: Users = new Users(mariadbPool)
 
+const chats = new Chats(mariadbPool)
 const app = useExpressJs(3000, users)
-const bot = useTelegram(process.env.BOT_TOKEN)
+const bot = useWelcomer(process.env.BOT_TOKEN, chats)
 
 const shutdown = (reason: string) => {
     console.log("Stopping server because of : ", reason);
     app.close()
-    bot.stop('SIGINT')
+    bot.close()
 }
 
 // Enable graceful stop
