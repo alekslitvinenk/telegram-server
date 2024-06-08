@@ -1,0 +1,74 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: funnybizz
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: funnybizz
+      revisionHistoryLimit: 5
+      progressDeadlineSeconds: 300
+      minReadySeconds: 10
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 1
+          maxSurge: 1
+      template:
+        metadata:
+          labels:
+            app: funnybizz
+        spec:
+          containers:
+            - name: funnybizz-app
+              image: alekslitvinenk/funnybizz:v0.1.0
+              imagePullPolicy: Always
+              ports:
+                - name: expressjs
+                  containerPort: 3000
+                  protocol: TCP
+                - name: telegram
+                  containerPort: 8080
+                  protocol: TCP
+              env:
+                - name: DB_USER
+                  value: root
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: mariadb-creds
+                      key: mariadb_root_password
+                      optional: false
+                - name: DB_HOST
+                  value: mariadb-svc:3306
+                - name: DB_SCHEMA
+                  value: telegram
+                - name: BOT_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: telegram
+                      key: token
+                      optional: false
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: funnybizz-svc
+      annotations:
+        service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
+      labels:
+        app: funnybizz
+    spec:
+      type: ClusterIP
+      ports:
+        - port: 3000
+          name: expressjs
+          protocol: TCP
+        - port: 8080
+          name: telegram
+          protocol: TCP
+      selector:
+        app: funnybizz
